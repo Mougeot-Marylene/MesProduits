@@ -1,20 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Produit } from '../model/produit.model';
+import { ProduitService } from '../services/produit.services';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  imports: [],
+  imports: [CommonModule],
   selector: 'app-produits',
   templateUrl: './produits.html',
 })
-export class Produits {
+export class Produits  implements OnInit{
 
   //utilisation du data binding pour afficher la liste des produits
-  produits : string[]; 
+  produits?: Produit[]; //model/Produit
 
-  /**
-   *
-   */
-  constructor() {
-    this.produits =  ["PC Asus", " Imprimante Espon", "Tablette samsung"]
-    
+
+  //private produitService : ProduitService => injection de dépendance
+  constructor(private produitService : ProduitService) { }
+
+  ngOnInit(): void {
+        this.produits =  this.produitService.listeProduit();
   }
+
 }

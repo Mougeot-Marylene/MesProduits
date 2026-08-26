@@ -1,21 +1,29 @@
 <div class="container">
-    <div class="card shadow mb-4">
-        <div class="card-body">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Liste de Produits</th>
-                    </tr>
-                </thead>
-                <!-- track => identifie chaque élément de façon unique pour qu'Angular sache quel produit a changé, sans tout redessiner à chaque mise à jour de la liste  -->
-                @for(produit of produits; track produit ){
-                <tbody>
-                    <tr>
-                        <td>{{produit}}</td>
-                    </tr>
-                </tbody>
-                }
-            </table>
-        </div>
+  <div class="card shadow mb-4">                   
+    <div class="card-body"> 
+     <table class="table table-striped">
+        <tr> <th>N°</th><th>Id</th><th>Nom</th> <th>Prix</th>  <th>Date Création</th> </tr>          
+         @for (produit of produits; track produit.idProduit; let index =$index; let nbr=$count; let first = $first; let last = $last)
+         {
+           @if(first)
+          {  <h1>Nombre : {{nbr}}</h1>}
+         
+          <tbody >
+            <tr >
+               <td>{{index}}</td>
+               <td>{{produit.idProduit}}</td>
+               <td>{{produit.nomProduit}}</td>
+               <td>{{produit.prixProduit}}</td>
+               <td>{{produit.dateCreation | date:'dd/MM/yyyy'}}</td>
+             </tr>                                    
+          </tbody>
+         }   
+         
+         @empty {
+          <h1>Aucun produit trouvé !</h1>
+         } 
+
+    </table>
     </div>
-</div>
+  </div>
+</div> 
