@@ -15,8 +15,6 @@ export class AddProduit  {
 
   constructor(private produitService : ProduitService) { }
 
- 
-
   public addProduit() {    
     //console.log(this.newProduit);
     this.produitService.ajouterProduit(this.newProduit);

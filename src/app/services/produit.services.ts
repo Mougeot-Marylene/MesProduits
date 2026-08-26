@@ -2,7 +2,7 @@ import { Injectable, Service } from '@angular/core';
 import { Produit } from '../model/produit.model';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ProduitService {
 
@@ -21,7 +21,33 @@ export class ProduitService {
         return this.produits;
     }
 
-    public ajouterProduit(produit : Produit){
+    public ajouterProduit(produit: Produit) {
         this.produits.push(produit); // ajouter un nouvel element au tableau
+    }
+
+    public supprimerProduit(prod: Produit) {
+        //supprimer le produit prod du tableau 
+        const index = this.produits.indexOf(prod, 0);
+        if (index > -1) {
+            this.produits.splice(index, 1);
+        }
+
+        //ou Bien
+
+        /* this.produits.forEach((cur, index) => { if(prod.idProduit === cur.idProduit) { this.produits.splice(index, 1); } }); */
+    }
+
+    public consulterProduit(id: number): Produit {
+        return this.produits.find(p => p.idProduit == id)!; //find => va chercher le premier element
+
+    }
+
+    public updateProduit(prod: Produit) {
+        //chercher le produit prod du tableau produits
+        const index = this.produits.indexOf(prod, 0);
+        if (index > -1) {
+            this.produits.splice(index, 1); //supprimer l'ancien éléments
+            this.produits.splice(index, 0, prod); // insérer le nouvel élément
+        }
     }
 }
