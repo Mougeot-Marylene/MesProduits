@@ -4,6 +4,7 @@ import { ProduitService } from '../services/produit.services';
 import { Produit } from '../model/produit.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Categorie } from '../model/categorie.model';
 
 @Component({
   imports: [FormsModule, CommonModule],
@@ -14,19 +15,23 @@ import { CommonModule } from '@angular/common';
 export class UpdateProduit implements OnInit {
 
   currentProduit = new Produit();
+  categories!: Categorie[];
+  updatedCatId!: number;
 
-  constructor(private activatedRoute: ActivatedRoute, private produitService: ProduitService, private router :Router,) { }
+  constructor(private activatedRoute: ActivatedRoute, private produitService: ProduitService, private router: Router,) { }
 
   ngOnInit(): void {
+    this.categories = this.produitService.listeCategorie();
+
     console.log(this.activatedRoute.snapshot.params['id']);
     this.currentProduit = this.produitService.consulterProduit(this.activatedRoute.snapshot.params['id']);
-    console.log(this.currentProduit);
+    this.updatedCatId = this.currentProduit.categorie.idCat;
+
   }
 
   updateProduit() {
+    this.currentProduit.categorie = this.produitService.consulterCategorie(this.updatedCatId);
     this.produitService.updateProduit(this.currentProduit);
     this.router.navigate(['produits']); // revenir à la page produit
   }
-
-
 }
