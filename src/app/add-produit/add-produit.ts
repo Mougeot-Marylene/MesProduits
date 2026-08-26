@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Produit } from '../model/produit.model';
 import { ProduitService } from '../services/produit.services';
+import { Produit } from '../model/produit.model';
 
 @Component({
   imports: [FormsModule],
