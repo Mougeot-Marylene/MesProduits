@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ProduitService } from '../services/produit.services';
 import { Produit } from '../model/produit.model';
@@ -20,21 +20,23 @@ export class AddProduit implements OnInit {
   newIdCat!: number;
   newCategorie!: Categorie;
 
-  constructor(private produitService: ProduitService, private router: Router) { }
+  constructor(private produitService: ProduitService, private router: Router, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-
-    this.categories = this.produitService.listeCategorie();
+    this.produitService.listeCategories().subscribe(cats => {
+      this.categories = cats;
+      console.log(cats);
+        this.cdr.detectChanges(); // Forcer le rafraîchissement dès que l'API répond !
+    });
   }
 
-  public addProduit() {
-    this.newCategorie =
-    this.produitService.consulterCategorie(this.newIdCat);
-    this.newProduit.categorie = this.newCategorie;
 
-    this.produitService.ajouterProduit(this.newProduit);
-    this.message = "produit " + this.newProduit.nomProduit + " ajouté avec succes";
-    this.router.navigate(['produits']);
+  addProduit() {
+    this.newProduit.categorie = this.categories.find(cat => cat.idCat == this.newIdCat)!;
+    this.produitService.ajouterProduit(this.newProduit).subscribe(prod => {
+        console.log(prod);
+        this.router.navigate(['produits']);
+      });
   }
 
 }
