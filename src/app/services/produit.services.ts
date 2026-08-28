@@ -17,8 +17,8 @@ const httpOptions = {
     providedIn: 'root'
 })
 export class ProduitService {
-
-    produits!: Produit[];
+    
+    produits!: Produit[]
     categories!: Categorie[];
 
     //private http : HttpClient => injection de dépendance PAR CONSRTUCTEUR
@@ -58,7 +58,17 @@ export class ProduitService {
     }
 
     listeCategories(): Observable<Categorie[]> {
-        return this.http.get<Categorie[]>(environment.apiURL+"/cat");
+        return this.http.get<Categorie[]>(environment.apiURL + "/cat");
+    }
+
+    rechercherParCategorie(idCat: number): Observable<Produit[]> {
+        const url = `${environment.apiURL}/produitCat/${idCat}`;
+        return this.http.get<Produit[]>(url);
+    }
+
+    rechercherParNom(nom: string): Observable<Produit[]> {
+        const url = `${environment.apiURL}/prodsByName/${nom}`;
+        return this.http.get<Produit[]>(url);
     }
 
 }
