@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Produit } from '../model/produit.model';
 import { ProduitService } from '../services/produit.services';
@@ -12,9 +12,9 @@ import { ProduitService } from '../services/produit.services';
   templateUrl: './recherche-par-nom.html',
 
 })
-export class RechercheParNom {
+export class RechercheParNom implements OnInit {
 
-  produits: Produit[] = []; // tableau vide par défaut, rempli plus tard par onChange()
+  produits!: Produit[];
   nomProduit!: string;
 
   constructor(private produitService: ProduitService, private cdr: ChangeDetectorRef) {
@@ -22,18 +22,25 @@ export class RechercheParNom {
   }
 
   ngOnInit(): void {
-    this.produitService.listeProduit().subscribe(prods => {
-      console.log(prods);
-      this.produits = prods;
-    });
-
-    //this.produits = [];
+    this.produits = [];
   }
 
   rechercherProds() {
-    this.produitService.rechercherParNom(this.nomProduit).subscribe(prods => {
+
+    if (this.nomProduit) {
+      this.produitService.rechercherParNom(this.nomProduit).subscribe(prods => {
         this.produits = prods;
         console.log(prods)
       });
+    } else {
+      this.produitService.listeProduit().subscribe(prods => {
+        console.log(prods);
+        this.produits = prods;
+        this.cdr.detectChanges(); // Forcer le rafraîchissement dès que l'API répond !
+      });
+
+    }
+    
+
   }
 }
